@@ -21,6 +21,7 @@ namespace karpovich
     void refresh();
     size_t countExpired() const;
     const std::string &getName() const;
+
   private:
     std::string name_;
     std::vector< std::string > lines_;
