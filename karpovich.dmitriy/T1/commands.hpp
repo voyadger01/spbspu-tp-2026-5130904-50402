@@ -17,7 +17,7 @@ namespace karpovich
   void cmdLink(NoteMap &notes, const std::string &from_name, const std::string &to_name);
   void cmdHalt(NoteMap &notes, const std::string &from_name, const std::string &to_name);
   void cmdMind(const NoteMap &notes, const std::string &name, std::ostream& out);
-  void cmdExpired(const NoteMap &notes, const std::string &name);
+  void cmdExpired(const NoteMap &notes, const std::string &name, std::ostream& out);
   void cmdRefresh(NoteMap &notes, const std::string &name);
 }
 
