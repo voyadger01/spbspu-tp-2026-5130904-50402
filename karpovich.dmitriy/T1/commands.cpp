@@ -16,7 +16,7 @@ void karpovich::cmdLine(NoteMap &notes, const std::string &name, const std::stri
   }
   it->second->addLine(text);
 }
-void karpovich::cmdShow(const NoteMap &notes, const std::string &name, std::ostream& out)
+void karpovich::cmdShow(const NoteMap &notes, const std::string &name, std::ostream &out)
 {
   NoteMap::const_iterator it = notes.find(name);
   if (it == notes.end()) {
@@ -49,7 +49,7 @@ void karpovich::cmdHalt(NoteMap &notes, const std::string &from_name, const std:
   }
   it_from->second->haltLink(to_name);
 }
-void karpovich::cmdMind(const NoteMap &notes, const std::string &name, std::ostream& out)
+void karpovich::cmdMind(const NoteMap &notes, const std::string &name, std::ostream &out)
 {
   NoteMap::const_iterator it = notes.find(name);
   if (it == notes.end()) {
@@ -57,7 +57,7 @@ void karpovich::cmdMind(const NoteMap &notes, const std::string &name, std::ostr
   }
   it->second->mindLinks(out);
 }
-void karpovich::cmdExpired(const NoteMap &notes, const std::string &name, std::ostream& out)
+void karpovich::cmdExpired(const NoteMap &notes, const std::string &name, std::ostream &out)
 {
   NoteMap::const_iterator it = notes.find(name);
   if (it == notes.end()) {
@@ -70,6 +70,6 @@ void karpovich::cmdRefresh(NoteMap &notes, const std::string &name)
   NoteMap::iterator it = notes.find(name);
   if (it == notes.end()) {
     throw std::logic_error("Note not found");
-  } 
+  }
   it->second->refresh();
 }
