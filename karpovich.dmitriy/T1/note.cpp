@@ -38,10 +38,38 @@ void karpovich::Note::show(std::ostream &out) const
   }
 }
 void karpovich::Note::mindLinks(std::ostream &out) const
-{}
+{
+  for (std::size_t i = 0; i < links_.size(); ++i) {
+    std::shared_ptr< Note > locked = links_[i].lock();
+    if (!locked) {
+      continue;
+    }
+    out << locked->getName() << '\n';
+  }
+}
 void karpovich::Note::refresh()
-{}
+{
+  for (std::vector< std::weak_ptr< Note > >::iterator it = links_.begin(); it != links_.end();) {
+    std::shared_ptr< Note > sp = it->lock();
+    if (!sp) {
+      it = links_.erase(it);
+    } else {
+      ++it;
+    }
+  }
+}
 size_t karpovich::Note::countExpired() const
-{}
+{
+  size_t count = 0;
+  for (std::vector< std::weak_ptr< Note > >::const_iterator it = links_.begin(); it != links_.end(); it++) {
+    std::shared_ptr< Note > sp = it->lock();
+    if (!sp) {
+      count++;
+    }
+  }
+  return count;
+}
 const std::string &karpovich::Note::getName() const
-{}
+{
+  return name_;
+}
