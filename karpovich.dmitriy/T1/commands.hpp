@@ -4,21 +4,23 @@
 #include <string>
 #include <unordered_map>
 #include <memory>
+#include <istream>
+#include <ostream>
 #include "note.hpp"
 
 namespace karpovich
 {
   using NoteMap = std::unordered_map< std::string, std::shared_ptr< Note > >;
 
-  void cmdNote(NoteMap &notes, const std::string &name);
-  void cmdLine(NoteMap &notes, const std::string &name, const std::string &text);
-  void cmdShow(const NoteMap &notes, const std::string &name, std::ostream &out);
-  void cmdDrop(NoteMap &notes, const std::string &name);
-  void cmdLink(NoteMap &notes, const std::string &from_name, const std::string &to_name);
-  void cmdHalt(NoteMap &notes, const std::string &from_name, const std::string &to_name);
-  void cmdMind(const NoteMap &notes, const std::string &name, std::ostream &out);
-  void cmdExpired(const NoteMap &notes, const std::string &name, std::ostream &out);
-  void cmdRefresh(NoteMap &notes, const std::string &name);
+  void cmdNote(std::istream &, std::ostream &, NoteMap &);
+  void cmdLine(std::istream &, std::ostream &, NoteMap &);
+  void cmdShow(std::istream &, std::ostream &, NoteMap &);
+  void cmdDrop(std::istream &, std::ostream &, NoteMap &);
+  void cmdLink(std::istream &, std::ostream &, NoteMap &);
+  void cmdHalt(std::istream &, std::ostream &, NoteMap &);
+  void cmdMind(std::istream &, std::ostream &, NoteMap &);
+  void cmdExpired(std::istream &, std::ostream &, NoteMap &);
+  void cmdRefresh(std::istream &, std::ostream &, NoteMap &);
 }
 
 #endif
