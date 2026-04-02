@@ -12,9 +12,6 @@ void karpovich::Note::addLine(std::string line)
 
 void karpovich::Note::addLink(std::shared_ptr< Note > tolink)
 {
-  if (tolink->getName() == name_) {
-    throw std::logic_error("Cannot link to self");
-  }
   for (size_t i = 0; i < links_.size(); ++i) {
     if (links_[i].first == tolink->getName()) {
       throw std::logic_error("Link already exists");
@@ -25,12 +22,9 @@ void karpovich::Note::addLink(std::shared_ptr< Note > tolink)
 
 void karpovich::Note::haltLink(const std::string &targetName)
 {
-  if (targetName == name_) {
-    throw std::logic_error("Self link");
-  }
   for (size_t i = 0; i < links_.size(); ++i) {
     if (links_[i].first == targetName) {
-      links_.erase(links_.begin() + static_cast< std::ptrdiff_t >(i));
+      links_.erase(links_.begin() + i);
       return;
     }
   }
