@@ -3,15 +3,12 @@
 
 #include <memory>
 #include <string>
-#include <unordered_map>
 #include <vector>
 #include <iostream>
 namespace karpovich
 {
   class Note
   {
-    using linksMap = std::unordered_map< std::string, std::weak_ptr< Note > >;
-
   public:
     Note(std::string name);
 
@@ -27,7 +24,7 @@ namespace karpovich
   private:
     std::string name_;
     std::vector< std::string > lines_;
-    linksMap links_;
+    std::vector< std::pair< std::string, std::weak_ptr< Note > > > links_;
     ;
   };
 }
