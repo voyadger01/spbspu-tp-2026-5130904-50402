@@ -50,11 +50,8 @@ void karpovich::Note::mindLinks(std::ostream &out) const
 void karpovich::Note::refresh()
 {
   for (std::vector< std::weak_ptr< Note > >::iterator it = links_.begin(); it != links_.end();) {
-    std::shared_ptr< Note > sp = it->lock();
-    if (!sp) {
+    if ((*it).expired()) {
       it = links_.erase(it);
-    } else {
-      ++it;
     }
   }
 }
@@ -62,8 +59,7 @@ size_t karpovich::Note::countExpired() const
 {
   size_t count = 0;
   for (std::vector< std::weak_ptr< Note > >::const_iterator it = links_.begin(); it != links_.end(); it++) {
-    std::shared_ptr< Note > sp = it->lock();
-    if (!sp) {
+    if ((*it).expired()) {
       count++;
     }
   }
