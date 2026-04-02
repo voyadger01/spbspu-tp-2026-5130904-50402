@@ -1,8 +1,4 @@
 #include "note.hpp"
-#include <cstddef>
-#include <memory>
-#include <vector>
-#include <string>
 #include <stdexcept>
 
 karpovich::Note::Note(std::string name):
@@ -24,11 +20,14 @@ void karpovich::Note::addLink(std::shared_ptr< Note > tolink)
       throw std::logic_error("Link already exists");
     }
   }
-  links_.push_back(std::make_pair(tolink->getName(), tolink));
+  links_.emplace_back(tolink->getName(), std::weak_ptr< Note >(tolink));
 }
 
 void karpovich::Note::haltLink(const std::string &targetName)
 {
+  if (targetName == name_) {
+    throw std::logic_error("Self link");
+  }
   for (size_t i = 0; i < links_.size(); ++i) {
     if (links_[i].first == targetName) {
       links_.erase(links_.begin() + static_cast< std::ptrdiff_t >(i));
