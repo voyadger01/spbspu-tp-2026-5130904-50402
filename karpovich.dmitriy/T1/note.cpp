@@ -33,6 +33,9 @@ void karpovich::Note::haltLink(const std::string &targetName)
 
 void karpovich::Note::show(std::ostream &out) const
 {
+  if (!lines_.size()) {
+    out << '\n';
+  }
   for (size_t i = 0; i < lines_.size(); ++i) {
     out << lines_[i] << '\n';
   }
@@ -40,10 +43,15 @@ void karpovich::Note::show(std::ostream &out) const
 
 void karpovich::Note::mindLinks(std::ostream &out) const
 {
+  bool printed = false;
   for (size_t i = 0; i < links_.size(); ++i) {
     if (!links_[i].second.expired()) {
       out << links_[i].first << '\n';
+      printed = true;
     }
+  }
+  if (!printed) {
+    out << '\n';
   }
 }
 

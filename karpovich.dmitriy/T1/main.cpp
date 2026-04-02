@@ -2,7 +2,6 @@
 #include <string>
 #include <unordered_map>
 #include <limits>
-#include <stdexcept>
 #include "commands.hpp"
 
 int main()
@@ -23,10 +22,7 @@ int main()
   while (std::cin >> cmd) {
     try {
       cmds.at(cmd)(std::cin, std::cout, notes);
-    } catch (const std::out_of_range &) {
-      std::cout << "<INVALID COMMAND>\n";
-      std::cin.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
-    } catch (const std::logic_error &) {
+    } catch (const std::exception &) {
       std::cout << "<INVALID COMMAND>\n";
       std::cin.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
     }
