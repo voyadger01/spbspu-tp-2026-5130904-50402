@@ -12,6 +12,9 @@ void karpovich::cmdNote(std::istream &in, std::ostream &, NoteMap &notes)
   if (name.empty()) {
     throw std::logic_error("Empty name");
   }
+  if (notes.find(name) != notes.end()) {
+    throw std::logic_error("Note already exists");
+  }
   notes[name] = std::make_shared< Note >(name);
 }
 
@@ -75,7 +78,8 @@ void karpovich::cmdHalt(std::istream &in, std::ostream &, NoteMap &notes)
     throw std::logic_error("Missing args");
   }
   NoteMap::iterator it_from = notes.find(from_name);
-  if (it_from == notes.end()) {
+  NoteMap::iterator it_to = notes.find(to_name);
+  if (it_from == notes.end() || it_to == notes.end()) {
     throw std::logic_error("Note not found");
   }
   it_from->second->haltLink(to_name);

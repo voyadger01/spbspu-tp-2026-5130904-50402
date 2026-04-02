@@ -2,69 +2,74 @@
 #include <cstddef>
 #include <memory>
 #include <vector>
+#include <string>
+#include <stdexcept>
 
 karpovich::Note::Note(std::string name):
   name_(name)
 {}
+
 void karpovich::Note::addLine(std::string line)
 {
   lines_.push_back(line);
 }
+
 void karpovich::Note::addLink(std::shared_ptr< Note > tolink)
 {
-  for (std::size_t i = 0; i < links_.size(); ++i) {
-    std::shared_ptr< Note > locked = links_[i].lock();
-    if (locked && locked == tolink) {
-      return;
-    }
+  if (links_.find(tolink->getName()) != links_.end()) {
+    throw std::logic_error("Link already exists");
   }
-  links_.push_back(tolink);
+  links_[tolink->getName()] = tolink;
 }
+
 void karpovich::Note::haltLink(const std::string &targetName)
 {
-  for (std::vector< std::weak_ptr< Note > >::iterator it = links_.begin(); it != links_.end();) {
-    std::shared_ptr< Note > sp = it->lock();
-    if (sp && sp->getName() == targetName) {
-      it = links_.erase(it);
-    } else {
-      ++it;
-    }
+  if (links_.find(targetName) == links_.end()) {
+    throw std::logic_error("Link not found");
   }
+  links_.erase(targetName);
 }
+
 void karpovich::Note::show(std::ostream &out) const
 {
-  for (size_t i = 0; i < lines_.size(); i++) {
+  for (std::size_t i = 0; i < lines_.size(); ++i) {
     out << lines_[i] << '\n';
   }
 }
+
 void karpovich::Note::mindLinks(std::ostream &out) const
 {
-  for (std::size_t i = 0; i < links_.size(); ++i) {
-    std::shared_ptr< Note > locked = links_[i].lock();
-    if (!locked) {
-      continue;
+  for (linksMap::const_iterator it = links_.begin(); it != links_.end(); ++it) {
+    if (!it->second.expired()) {
+      out << it->first << '\n';
     }
-    out << locked->getName() << '\n';
   }
 }
+
 void karpovich::Note::refresh()
 {
-  for (std::vector< std::weak_ptr< Note > >::iterator it = links_.begin(); it != links_.end();) {
-    if ((*it).expired()) {
-      it = links_.erase(it);
+  std::vector< std::string > toRemove;
+  for (linksMap::const_iterator it = links_.begin(); it != links_.end(); ++it) {
+    if (it->second.expired()) {
+      toRemove.push_back(it->first);
     }
   }
+  for (std::size_t i = 0; i < toRemove.size(); ++i) {
+    links_.erase(toRemove[i]);
+  }
 }
+
 size_t karpovich::Note::countExpired() const
 {
   size_t count = 0;
-  for (std::vector< std::weak_ptr< Note > >::const_iterator it = links_.begin(); it != links_.end(); it++) {
-    if ((*it).expired()) {
-      count++;
+  for (linksMap::const_iterator it = links_.begin(); it != links_.end(); ++it) {
+    if (it->second.expired()) {
+      ++count;
     }
   }
   return count;
 }
+
 const std::string &karpovich::Note::getName() const
 {
   return name_;
