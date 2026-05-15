@@ -46,6 +46,7 @@ std::istream &karpovich::operator>>(std::istream &in, LabelIO &&dest)
   }
   return in;
 }
+
 std::istream &karpovich::operator>>(std::istream &in, BinIO &&dest)
 {
   std::istream::sentry sentry(in);
@@ -74,7 +75,7 @@ std::istream &karpovich::operator>>(std::istream &in, BinIO &&dest)
     return in;
   }
   try {
-    dest.ref = std::stoull(numBin, nullptr, 2);
+    dest.ref = std::stoull(numBin);
   } catch (...) {
     in.setstate(std::ios::failbit);
   }
