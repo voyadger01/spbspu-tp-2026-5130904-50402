@@ -1,4 +1,5 @@
 #include "utils.hpp"
+#include <iomanip>
 #include <iostream>
 
 karpovich::IOguard::IOguard(std::basic_ios< char > &s):
@@ -48,19 +49,34 @@ std::istream &karpovich::operator>>(std::istream &in, BinIO &&dest)
 {
   return in;
 }
+
 std::istream &karpovich::operator>>(std::istream &in, OctIO &&dest)
 {
+  std::istream::sentry sentry(in);
+  if (!sentry) {
+    return in;
+  }
+
+  IOguard guard(in);
+  in >> DelimIO{'0'} >> std::oct >> dest.ref;
   return in;
 }
+
 std::istream &karpovich::operator>>(std::istream &in, StringIO &&dest)
 {
-  return in;
+  std::istream::sentry sentry(in);
+  if (!sentry) {
+    return in;
+  }
+
+  return in >> std::quoted(dest.ref);
 }
 
 std::istream &karpovich::operator>>(std::istream &in, DataStruct &dest)
 {
   return in;
 }
+
 std::ostream &karpovich::operator<<(std::ostream &out, const DataStruct &dest)
 {
   return out;
