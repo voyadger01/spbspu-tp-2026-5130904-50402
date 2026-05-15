@@ -51,7 +51,7 @@ namespace karpovich
   std::istream &operator>>(std::istream &in, StringIO &&dest);
 
   std::istream &operator>>(std::istream &in, DataStruct &dest);
-  std::ostream &operator<<(std::ostream &out, const DataStruct &dest);
+  std::ostream &operator<<(std::ostream &out, const DataStruct &src);
 
   bool operator<(const DataStruct &lhs, const DataStruct &rhs);
 }

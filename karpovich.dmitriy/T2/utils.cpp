@@ -79,7 +79,7 @@ std::istream &karpovich::operator>>(std::istream &in, DataStruct &dest)
     return in;
   }
 
-  DataStruct temp{};
+  DataStruct temp;
   bool got1 = false;
   bool got2 = false;
   bool got3 = false;
@@ -122,7 +122,7 @@ std::istream &karpovich::operator>>(std::istream &in, DataStruct &dest)
   return in;
 }
 
-std::ostream &karpovich::operator<<(std::ostream &out, const DataStruct &dest)
+std::ostream &karpovich::operator<<(std::ostream &out, const DataStruct &src)
 {
   return out;
 }
