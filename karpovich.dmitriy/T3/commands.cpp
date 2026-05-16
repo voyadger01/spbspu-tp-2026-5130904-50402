@@ -59,24 +59,24 @@ namespace
     out << std::accumulate(areas.begin(), areas.end(), 0.0, std::plus< double >()) << "\n";
   }
 
-bool isSpaceChar(char c)
-{
-  return c == ' ';
-}
+  bool isSpaceChar(char c)
+  {
+    return c == ' ';
+  }
 }
 
 void karpovich::area(std::istream &in, std::ostream &out, const std::vector< Polygon > &polygons)
 {
   std::string param;
   if (!(in >> param)) {
-    throw std::invalid_argument("");
+    throw std::invalid_argument("invalid");
   }
 
   out << std::fixed << std::setprecision(1);
 
   if (param == "MEAN") {
     if (polygons.empty()) {
-      throw std::invalid_argument("");
+      throw std::invalid_argument("invalid");
     }
     std::vector< double > areas;
     areas.reserve(polygons.size());
@@ -90,11 +90,11 @@ void karpovich::area(std::istream &in, std::ostream &out, const std::vector< Pol
   } else if (isNumber(param)) {
     size_t n = std::stoul(param);
     if (n < 3) {
-      throw std::invalid_argument("");
+      throw std::invalid_argument("invalid");
     }
     printFilteredSum(out, polygons, std::bind(hasVertexCount, std::placeholders::_1, n));
   } else {
-    throw std::invalid_argument("");
+    throw std::invalid_argument("invalid");
   }
 }
 
@@ -102,10 +102,10 @@ void karpovich::max(std::istream &in, std::ostream &out, const std::vector< Poly
 {
   std::string param;
   if (!(in >> param)) {
-    throw std::invalid_argument("");
+    throw std::invalid_argument("invalid");
   }
   if (polygons.empty()) {
-    throw std::invalid_argument("");
+    throw std::invalid_argument("invalid");
   }
 
   if (param == "AREA") {
@@ -115,7 +115,7 @@ void karpovich::max(std::istream &in, std::ostream &out, const std::vector< Poly
     auto it = std::max_element(polygons.begin(), polygons.end(), vertexLess);
     out << it->points.size() << "\n";
   } else {
-    throw std::invalid_argument("");
+    throw std::invalid_argument("invalid");
   }
 }
 
@@ -123,10 +123,10 @@ void karpovich::min(std::istream &in, std::ostream &out, const std::vector< Poly
 {
   std::string param;
   if (!(in >> param)) {
-    throw std::invalid_argument("");
+    throw std::invalid_argument("invalid");
   }
   if (polygons.empty()) {
-    throw std::invalid_argument("");
+    throw std::invalid_argument("invalid");
   }
 
   if (param == "AREA") {
@@ -136,7 +136,7 @@ void karpovich::min(std::istream &in, std::ostream &out, const std::vector< Poly
     auto it = std::min_element(polygons.begin(), polygons.end(), vertexLess);
     out << it->points.size() << "\n";
   } else {
-    throw std::invalid_argument("");
+    throw std::invalid_argument("invalid");
   }
 }
 
@@ -144,7 +144,7 @@ void karpovich::count(std::istream &in, std::ostream &out, const std::vector< Po
 {
   std::string param;
   if (!(in >> param)) {
-    throw std::invalid_argument("");
+    throw std::invalid_argument("invalid");
   }
 
   if (param == "EVEN") {
@@ -154,11 +154,11 @@ void karpovich::count(std::istream &in, std::ostream &out, const std::vector< Po
   } else if (isNumber(param)) {
     size_t n = std::stoul(param);
     if (n < 3) {
-      throw std::invalid_argument("");
+      throw std::invalid_argument("invalid");
     }
     out << std::count_if(polygons.begin(), polygons.end(), std::bind(hasVertexCount, std::placeholders::_1, n)) << "\n";
   } else {
-    throw std::invalid_argument("");
+    throw std::invalid_argument("invalid");
   }
 }
 
@@ -172,7 +172,7 @@ void karpovich::same(std::istream &in, std::ostream &out, const std::vector< Pol
   Polygon target;
   if (!(in >> target)) {
     in.clear();
-    in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    in.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
     out << "<INVALID COMMAND>\n";
     return;
   }
