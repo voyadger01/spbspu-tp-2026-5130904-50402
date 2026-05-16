@@ -1,10 +1,21 @@
 #include "shapes.hpp"
 #include <algorithm>
+#include <functional>
 #include <istream>
 #include <iterator>
+#include <numeric>
 #include <vector>
 #include "../common/delimiter.hpp"
 #include "../common/ioguard.hpp"
+
+namespace
+{
+  double crossTerm(const std::vector< karpovich::Point > &pts, size_t i, size_t n)
+  {
+    size_t j = (i + 1) % n;
+    return pts[i].x * pts[j].y - pts[j].x * pts[i].y;
+  }
+}
 
 std::istream &karpovich::operator>>(std::istream &in, Point &point)
 {
@@ -38,4 +49,19 @@ std::istream &karpovich::operator>>(std::istream &in, Polygon &polygon)
     polygon.points = std::move(points);
   }
   return in;
+}
+
+double karpovich::calculateArea(const Polygon &polygon)
+{
+  size_t n = polygon.points.size();
+  if (n < 3) {
+    return 0.0;
+  }
+  std::vector< size_t > idxs(n);
+  std::iota(idxs.begin(), idxs.end(), 0);
+  std::vector< double > terms(n);
+  auto func = std::bind(crossTerm, std::cref(polygon.points), std::placeholders::_1, n);
+  std::transform(idxs.begin(), idxs.end(), terms.begin(), func);
+  double sum = std::accumulate(terms.begin(), terms.end(), 0.0, std::plus< double >());
+  return std::abs(sum) / 2.0;
 }

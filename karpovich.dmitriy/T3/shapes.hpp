@@ -16,7 +16,9 @@ namespace karpovich
 
   std::istream &operator>>(std::istream &in, Point &point);
   std::istream &operator>>(std::istream &in, Polygon &polygon);
-
+  double calculateArea(const Polygon &polygon);
+  bool hasRightAngle(const Polygon &polygon);
+  bool isSame(const Polygon &p1, const Polygon &p2);
 }
 
 #endif
