@@ -16,6 +16,7 @@ namespace karpovich
 
   std::istream &operator>>(std::istream &in, Point &point);
   std::istream &operator>>(std::istream &in, Polygon &polygon);
+
 }
 
 #endif

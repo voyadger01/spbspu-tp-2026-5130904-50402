@@ -32,7 +32,8 @@ std::istream &karpovich::operator>>(std::istream &in, Polygon &polygon)
     return in;
   }
   std::vector< Point > points;
-  std::copy_n(std::istream_iterator< Point >(in), count, points.begin());
+  points.reserve(count);
+  std::copy_n(std::istream_iterator< Point >(in), count, std::back_inserter(points));
   if (in) {
     polygon.points = std::move(points);
   }
