@@ -1,7 +1,6 @@
 #ifndef UTILS_HPP
 #define UTILS_HPP
 
-#include <ios>
 #include <string>
 namespace karpovich
 {
@@ -23,28 +22,10 @@ namespace karpovich
   {
     std::string &ref;
   };
-  struct DelimIO
-  {
-    char exp;
-  };
   struct LabelIO
   {
     std::string exp;
   };
-  class IOguard
-  {
-  public:
-    explicit IOguard(std::basic_ios< char > &s);
-    ~IOguard();
-
-  private:
-    std::basic_ios< char > &s_;
-    std::streamsize width_;
-    std::streamsize precision_;
-    std::basic_ios< char >::fmtflags fmt_;
-    char fill_;
-  };
-  std::istream &operator>>(std::istream &in, DelimIO &&dest);
   std::istream &operator>>(std::istream &in, LabelIO &&dest);
   std::istream &operator>>(std::istream &in, BinIO &&dest);
   std::istream &operator>>(std::istream &in, OctIO &&dest);
