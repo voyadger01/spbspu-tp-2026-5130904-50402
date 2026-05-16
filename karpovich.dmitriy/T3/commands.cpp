@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <functional>
 #include <iomanip>
+#include <limits>
 #include <numeric>
 
 namespace
@@ -58,10 +59,10 @@ namespace
     out << std::accumulate(areas.begin(), areas.end(), 0.0, std::plus< double >()) << "\n";
   }
 
-  bool isSpaceChar(char c)
-  {
-    return std::isspace(c);
-  }
+bool isSpaceChar(char c)
+{
+  return c == ' ';
+}
 }
 
 void karpovich::area(std::istream &in, std::ostream &out, const std::vector< Polygon > &polygons)
@@ -170,12 +171,20 @@ void karpovich::same(std::istream &in, std::ostream &out, const std::vector< Pol
 {
   Polygon target;
   if (!(in >> target)) {
-    throw std::invalid_argument("");
+    in.clear();
+    in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    out << "<INVALID COMMAND>\n";
+    return;
+  }
+  if (target.points.size() < 3) {
+    out << "<INVALID COMMAND>\n";
+    return;
   }
   std::string rest;
   std::getline(in, rest);
   if (!std::all_of(rest.begin(), rest.end(), isSpaceChar)) {
-    throw std::invalid_argument("");
+    out << "<INVALID COMMAND>\n";
+    return;
   }
   auto func = std::bind(&karpovich::isSame, std::placeholders::_1, std::cref(target));
   out << std::count_if(polygons.begin(), polygons.end(), func) << "\n";
