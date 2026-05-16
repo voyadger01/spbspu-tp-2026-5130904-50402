@@ -76,7 +76,9 @@ std::istream &karpovich::operator>>(std::istream &in, BinIO &&dest)
   }
   try {
     dest.ref = std::stoull(numBin);
-  } catch (...) {
+  } catch (const std::out_of_range &) {
+    in.setstate(std::ios::failbit);
+  } catch (const std::invalid_argument &) {
     in.setstate(std::ios::failbit);
   }
   return in;
