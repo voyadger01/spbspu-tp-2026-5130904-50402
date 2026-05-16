@@ -25,6 +25,7 @@ namespace
   {
     return p.points.size() == n;
   }
+
   bool isDigitChar(unsigned char c)
   {
     return std::isdigit(c);
@@ -33,6 +34,16 @@ namespace
   bool isNumber(const std::string &s)
   {
     return !s.empty() && std::all_of(s.begin(), s.end(), isDigitChar);
+  }
+
+  bool areaLess(const karpovich::Polygon &a, const karpovich::Polygon &b)
+  {
+    return karpovich::calculateArea(a) < karpovich::calculateArea(b);
+  }
+
+  bool vertexLess(const karpovich::Polygon &a, const karpovich::Polygon &b)
+  {
+    return a.points.size() < b.points.size();
   }
 
   template < class Pred >
@@ -75,3 +86,44 @@ void karpovich::area(std::istream &in, std::ostream &out, const std::vector< Pol
   }
 }
 
+void karpovich::max(std::istream &in, std::ostream &out, const std::vector< Polygon > &polygons)
+{
+  std::string param;
+  if (!(in >> param)) {
+    throw std::invalid_argument("");
+  }
+  if (polygons.empty()) {
+    throw std::invalid_argument("");
+  }
+
+  if (param == "AREA") {
+    auto it = std::max_element(polygons.begin(), polygons.end(), areaLess);
+    out << karpovich::calculateArea(*it) << "\n";
+  } else if (param == "VERTEXES") {
+    auto it = std::max_element(polygons.begin(), polygons.end(), vertexLess);
+    out << it->points.size() << "\n";
+  } else {
+    throw std::invalid_argument("");
+  }
+}
+
+void karpovich::min(std::istream &in, std::ostream &out, const std::vector< Polygon > &polygons)
+{
+  std::string param;
+  if (!(in >> param)) {
+    throw std::invalid_argument("");
+  }
+  if (polygons.empty()) {
+    throw std::invalid_argument("");
+  }
+
+  if (param == "AREA") {
+    auto it = std::min_element(polygons.begin(), polygons.end(), areaLess);
+    out << karpovich::calculateArea(*it) << "\n";
+  } else if (param == "VERTEXES") {
+    auto it = std::min_element(polygons.begin(), polygons.end(), vertexLess);
+    out << it->points.size() << "\n";
+  } else {
+    throw std::invalid_argument("");
+  }
+}
