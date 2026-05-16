@@ -39,6 +39,11 @@ namespace
   }
 }
 
+bool karpovich::operator==(const Point &lhs, const Point &rhs)
+{
+  return lhs.x == rhs.x && lhs.y == rhs.y;
+}
+
 std::istream &karpovich::operator>>(std::istream &in, Point &point)
 {
   std::istream::sentry sentry(in);
