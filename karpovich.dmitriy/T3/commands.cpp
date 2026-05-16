@@ -146,3 +146,18 @@ void karpovich::count(std::istream &in, std::ostream &out, const std::vector< Po
     throw std::invalid_argument("");
   }
 }
+
+void karpovich::rightshapes(std::istream & /*in*/, std::ostream &out, const std::vector< Polygon > &polygons)
+{
+  out << std::count_if(polygons.begin(), polygons.end(), &karpovich::hasRightAngle) << "\n";
+}
+
+void karpovich::same(std::istream &in, std::ostream &out, const std::vector< Polygon > &polygons)
+{
+  Polygon target;
+  if (!(in >> target)) {
+    throw std::invalid_argument("");
+  }
+  auto func = std::bind(&karpovich::isSame, std::placeholders::_1, std::cref(target));
+  out << std::count_if(polygons.begin(), polygons.end(), func) << "\n";
+}
