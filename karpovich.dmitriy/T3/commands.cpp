@@ -127,3 +127,22 @@ void karpovich::min(std::istream &in, std::ostream &out, const std::vector< Poly
     throw std::invalid_argument("");
   }
 }
+
+void karpovich::count(std::istream &in, std::ostream &out, const std::vector< Polygon > &polygons)
+{
+  std::string param;
+  if (!(in >> param)) {
+    throw std::invalid_argument("");
+  }
+
+  if (param == "EVEN") {
+    out << std::count_if(polygons.begin(), polygons.end(), isEven) << "\n";
+  } else if (param == "ODD") {
+    out << std::count_if(polygons.begin(), polygons.end(), isOdd) << "\n";
+  } else if (isNumber(param)) {
+    size_t n = std::stoul(param);
+    out << std::count_if(polygons.begin(), polygons.end(), std::bind(hasVertexCount, std::placeholders::_1, n)) << "\n";
+  } else {
+    throw std::invalid_argument("");
+  }
+}
