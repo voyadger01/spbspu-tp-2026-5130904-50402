@@ -5,8 +5,8 @@
 #include <iterator>
 #include <numeric>
 #include <vector>
-#include "../common/delimiter.hpp"
-#include "../common/ioguard.hpp"
+#include <delimiter.hpp>
+#include <ioguard.hpp>
 
 namespace
 {
